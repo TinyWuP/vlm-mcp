@@ -12,10 +12,17 @@
     "start": "node build/index.js",
     "dev": "ts-node src/index.ts"
   },
-  "keywords": ["mcp", "image-analysis", "glm-4.5v", "ai"],
+  "keywords": [
+    "mcp",
+    "image-analysis",
+    "glm-4.5v",
+    "ai"
+  ],
   "author": "",
   "license": "ISC",
-  "files": ["build"],
+  "files": [
+    "build"
+  ],
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.17.2",
     "dotenv": "^16.4.5",
