@@ -3,7 +3,7 @@ export const DEFAULT_CONFIG = {
   models: {
     image: 'glm-4.5v',
     video: 'glm-4.5v',
-    generation: 'cogview-3-flash'
+    generation: 'cogview-4'
   },
 
   // API 配置
