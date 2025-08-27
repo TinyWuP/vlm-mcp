@@ -92,7 +92,7 @@ pnpm start
     "vl-mcp": {
       "command": "node",
       "args": [
-        "$HOME/Project_Name/build/index.js"
+        "$HOME/vlm-mcp/build/index.js"
       ],
       "env": {
         "ALIYUN_API_KEY": "sk-XXXXXXXXXXXXXXX"
