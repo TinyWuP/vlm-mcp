@@ -1,6 +1,6 @@
 # 崮生mcp工具箱
 
-[English README](README.en.md) | 中文说明
+(README.en.md) | 中文说明
 
 一个基于 Model Context Protocol (MCP) 的多模态 AI 工具箱，集成了智谱 GLM 、阿里云 Qwen 、 Pollinations.AI 两大平台的强大能力。
 
