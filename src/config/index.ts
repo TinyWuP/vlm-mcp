@@ -3,7 +3,8 @@ export const DEFAULT_CONFIG = {
   models: {
     image: 'glm-4.5v',
     video: 'glm-4.5v',
-    generation: 'cogview-4'
+    generation: 'cogview-4',
+    qwen: 'qwen-vl-max'
   },
 
   // API 配置
@@ -45,5 +46,6 @@ export const ENV_VAR_MAPPING = {
   GLM_API_KEY: 'GLM_API_KEY',
   GLM_IMAGE_MODEL: 'GLM_IMAGE_MODEL',
   GLM_VIDEO_MODEL: 'GLM_VIDEO_MODEL',
-  GLM_GENERATION_MODEL: 'GLM_GENERATION_MODEL'
+  GLM_GENERATION_MODEL: 'GLM_GENERATION_MODEL',
+  GLM_QWEN_MODEL: 'GLM_QWEN_MODEL'
 } as const;

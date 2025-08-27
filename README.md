@@ -2,7 +2,7 @@
 
 [English README](README.en.md) | 中文说明
 
-一个基于 Model Context Protocol (MCP) 的多模态 AI 工具箱，集成了智谱 GLM 和 Pollinations.AI 两大平台的强大能力。
+一个基于 Model Context Protocol (MCP) 的多模态 AI 工具箱，集成了智谱 GLM 、阿里云 Qwen 、 Pollinations.AI 两大平台的强大能力。
 
 ## 🚀 功能特性
 
@@ -16,6 +16,11 @@
 - 📝 **文本生成** - 智能文本生成和对话
 - 🔊 **音频生成** - 文字转语音，支持多种声音
 - 👁️ **图片分析** - OpenAI 兼容的视觉分析能力
+
+### 阿里百炼 Qwen
+- 📝 **文本生成** - 使用Qwen系列模型进行文本生成
+- 🖼️ **图片分析** - 使用Qwen-VL系列模型进行图像分析
+- 🎬 **视频分析** - 使用Qwen-VL系列模型进行视频分析
 
 ### 通用特性
 - 🔧 灵活的环境变量配置
@@ -40,12 +45,22 @@ pnpm install
 export GLM_API_KEY=your_glm_api_key_here
 ```
 
+#### 阿里云 Qwen API Key
+访问 [阿里云DashScope平台](https://dashscope.console.aliyun.com/) 获取 API Key：
+
+```bash
+export ALIYUN_API_KEY=your_aliyun_api_key_here
+```
+
 #### 模型配置（可选）
 ```bash
 # GLM 模型配置
 GLM_IMAGE_MODEL=glm-4.5v
 GLM_VIDEO_MODEL=glm-4.5v
 GLM_GENERATION_MODEL=cogview-3-flash
+
+# Qwen 模型配置
+GLM_QWEN_MODEL=qwen-vl-max
 ```
 
 ### 环境变量优先级
@@ -72,7 +87,19 @@ pnpm start
 
 ### 作为 MCP 工具使用
 ```bash
-./build/index.js
+{
+  "mcpServers": {
+    "vl-mcp": {
+      "command": "node",
+      "args": [
+        "$HOME/Project_Name/build/index.js"
+      ],
+      "env": {
+        "ALIYUN_API_KEY": "sk-XXXXXXXXXXXXXXX"
+      }
+    }
+  }
+}
 ```
 
 ## 📚 工具参考
@@ -203,6 +230,63 @@ pnpm start
 }
 ```
 
+### 阿里百炼 Qwen 工具
+
+#### qwen_generate_text - 文本生成
+**参数：**
+- `prompt` (string): 文本提示
+- `model` (string, 可选): 生成模型 (默认: qwen-max)
+- `temperature` (number, 可选): 随机性 (0.0-1.0)
+- `top_p` (number, 可选): 核心采样 (0.0-1.0)
+- `max_tokens` (number, 可选): 最大输出令牌数
+- `system` (string, 可选): 系统提示词
+
+**示例：**
+```json
+{
+  "prompt": "写一首关于春天的诗",
+  "model": "qwen-max",
+  "temperature": 0.8
+}
+```
+
+#### qwen_analyze_image - 图片分析
+**参数：**
+- `image_path` (string, 可选): 本地图片路径
+- `image_url` (string, 可选): 图片 URL
+- `prompt` (string): 分析提示文本
+- `model` (string, 可选): 分析模型 (默认: qwen-vl-max)
+- `temperature` (number, 可选): 随机性 (0.0-1.0)
+- `top_p` (number, 可选): 核心采样 (0.0-1.0)
+- `max_tokens` (number, 可选): 最大输出令牌数
+
+**示例：**
+```json
+{
+  "image_path": "/path/to/image.png",
+  "prompt": "请详细描述这张图片的内容",
+  "model": "qwen-vl-max"
+}
+```
+
+#### qwen_analyze_video - 视频分析
+**参数：**
+- `video_url` (string): 视频 URL
+- `prompt` (string): 分析提示文本
+- `model` (string, 可选): 分析模型 (默认: qwen-vl-max)
+- `temperature` (number, 可选): 随机性 (0.0-1.0)
+- `top_p` (number, 可选): 核心采样 (0.0-1.0)
+- `max_tokens` (number, 可选): 最大输出令牌数
+
+**示例：**
+```json
+{
+  "video_url": "https://example.com/video.mp4",
+  "prompt": "分析这个视频的主要内容",
+  "model": "qwen-vl-max"
+}
+```
+
 ## 📝 日志系统
 
 项目包含完整的日志记录系统，所有工具调用都会记录到项目根目录的 `mcpserver.log` 文件中：
@@ -218,17 +302,22 @@ pnpm start
 src/
 ├── config/
 │   ├── index.ts              # GLM 配置
-│   └── pollinations.ts       # Pollinations 配置
+│   ├── pollinations.ts       # Pollinations 配置
+│   └── qwen.ts              # 阿里百炼 Qwen 配置
 ├── tools/
 │   ├── bigmodel/             # 智谱 GLM 工具
 │   │   ├── image-analysis.ts
 │   │   ├── video-analysis.ts
 │   │   └── image-generation.ts
-│   └── pollinations/         # Pollinations.AI 工具
-│       ├── image-generation.ts
+│   ├── pollinations/         # Pollinations.AI 工具
+│   │   ├── image-generation.ts
+│   │   ├── text-generation.ts
+│   │   ├── audio-generation.ts
+│   │   └── image-analysis.ts
+│   └── qwen/                # 阿里百炼 Qwen 工具
 │       ├── text-generation.ts
-│       ├── audio-generation.ts
-│       └── image-analysis.ts
+│       ├── image-analysis.ts
+│       └── video-analysis.ts
 ├── utils/
 │   ├── helpers.ts           # 通用助手函数
 │   ├── common.ts            # 通用响应函数

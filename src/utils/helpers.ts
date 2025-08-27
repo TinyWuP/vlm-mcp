@@ -6,9 +6,11 @@ import { DEFAULT_CONFIG } from '../config/index.js';
 export const GLM_API_BASE = 'https://open.bigmodel.cn/api/paas/v4/chat/completions';
 export const GLM_IMAGE_BASE = 'https://open.bigmodel.cn/api/paas/v4/images/generations';
 
-export function getApiKey(): string {
-  if (process.env.GLM_API_KEY) {
-    return process.env.GLM_API_KEY;
+export function getApiKey(provider: 'glm' | 'aliyun' = 'glm'): string {
+  const envVar = provider === 'aliyun' ? 'ALIYUN_API_KEY' : 'GLM_API_KEY';
+  
+  if (process.env[envVar]) {
+    return process.env[envVar];
   }
 
   const envPaths = [
@@ -19,16 +21,16 @@ export function getApiKey(): string {
   for (const envPath of envPaths) {
     if (fs.existsSync(envPath)) {
       const env = dotenv.parse(fs.readFileSync(envPath));
-      if (env.GLM_API_KEY) {
-        return env.GLM_API_KEY;
+      if (env[envVar]) {
+        return env[envVar];
       }
     }
   }
 
-  throw new Error('GLM_API_KEY environment variable is required');
+  throw new Error(`${envVar} environment variable is required`);
 }
 
-export function getModelConfig(type: 'image' | 'video' | 'generation'): string {
+export function getModelConfig(type: 'image' | 'video' | 'generation' | 'qwen'): string {
   const envVar = `GLM_${type.toUpperCase()}_MODEL`;
   return process.env[envVar] || DEFAULT_CONFIG.models[type];
 }
